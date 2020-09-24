@@ -1,0 +1,57 @@
+﻿@model HotelVanKeus.Models.Room;
+
+<h3>Add new reservation:</h3>
+<hr class="my-4" />
+
+<h5>Step 1: Add room requirements and dates:</h5>
+<hr class="my-4" />
+
+<div class="progress">
+    <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" style="width: 75%"></div>
+</div>
+
+<hr class="my-4" />
+
+<form method="post" class="form-group" asp-action="GetAvailableRooms" asp-controller="Reservation">
+    <input type="hidden" asp-for="Status" value="@HotelVanKeus.Models.StatusEnum.Available" />
+    <div>
+        <p class="lead">Booking requirements:</p>
+        <div class="form-group">
+            <label class="col-form-label">Room Size (persons)</label>
+            <select class="form-control" asp-for="Size">
+                <option>Select..</option>
+                <option>1</option>
+                <option>2</option>
+                <option>3 to 4</option>
+                <option>5 to 6</option>
+            </select>
+            <span asp-validation-for="Size" class="text-warning"></span>
+        </div>
+
+        <div class="form-group">
+            <label class="col-form-label">Room Type</label>
+            <select class="form-control" asp-for="TypeRoom">
+                <option>Select..</option>
+                <option>@HotelVanKeus.Models.TypeEnum.Budget</option>
+                <option>@HotelVanKeus.Models.TypeEnum.Normal</option>
+                <option>@HotelVanKeus.Models.TypeEnum.Luxury</option>
+            </select>
+            <span asp-validation-for="TypeRoom" class="text-warning"></span>
+        </div>
+
+        <div class="form-group">
+            <label class="col-form-label">Check in</label>
+            <input class="form-control" asp-for="ReservationRoom.Reservation.Checkin"/>
+            <span asp-validation-for="ReservationRoom.Reservation.Checkin" class="text-warning"></span>
+        </div>
+        
+        <div class="form-group">
+            <label class="col-form-label">Check out</label>
+            <input class="form-control" asp-for="ReservationRoom.Reservation.Checkout"/>
+            <span asp-validation-for="ReservationRoom.Reservation.Checkout" class="text-warning"></span>
+        </div>
+
+        <button class="btn btn-info" type="submit">Next: Show available rooms</button>
+        <button class="btn btn-primary" asp-action="list">Cancel</button>
+    </div>
+</form>

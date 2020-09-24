@@ -1,0 +1,33 @@
+{
+  "version": "1.0",
+  "defaultProvider": "cdnjs",
+  "libraries": [
+    {
+      "library": "jquery@3.5.1",
+      "destination": "wwwroot/lib/jquery/"
+    },
+    {
+      "library": "twitter-bootstrap@4.5.2",
+      "destination": "wwwroot/lib/bootstrap/"
+    },
+    {
+      "library": "bootswatch@4.5.2",
+      "destination": "wwwroot/lib/bootswatch/",
+      "files": [
+        "darkly/bootstrap.css",
+        "darkly/bootstrap.min.css"
+      ]
+    },
+    {
+      "library": "font-awesome@5.14.0",
+      "destination": "wwwroot/font-awesome/"
+    },
+    {
+      "library": "popper.js@2.4.4",
+      "destination": "wwwroot/popper.js/",
+      "files": [
+        "cjs/popper.min.js"
+      ]
+    }
+  ]
+}

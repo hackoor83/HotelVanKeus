@@ -1,0 +1,43 @@
+﻿@model List<HotelVanKeus.Models.Guest>;
+
+<h3>List of Guests:</h3>
+
+<hr class="my-2" />
+
+<div>
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th scope="col">Guest Id</th>
+                <th scope="col">First name</th>
+                <th scope="col">Last name</th>
+                <th scope="col">Telephone</th>
+                <th scope="col">Email</th>
+                <th scope="col">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var guest in Model)
+            {
+                <tr class="table-primary">
+                    <td>@guest.GuestId</td>
+                    <td>@guest.FirstName</td>
+                    <td>@guest.LastName</td>
+                    <td>@guest.Telephone</td>
+                    <td>@guest.Email</td>
+                    <td>
+                       <a asp-action="edit" asp-route-id="@guest.GuestId" type="button" class="btn-sm btn-warning">Edit</a>
+                       <a asp-action="delete" asp-route-id="@guest.GuestId" type="button" class="btn-sm btn-danger">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+
+
+@*
+    <a asp-action="delete" asp-route-id="@guest.GuestId" type="button" >Delete</a>
+    <a asp-action="edit" asp-route-id="@guest.GuestId" type="button" >Edit</a>
+*@

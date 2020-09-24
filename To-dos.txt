@@ -1,0 +1,12 @@
+To do:
+
+1. Add Renovation controller
+
+
+Issues:
+1. Add modal
+2. In the SelectRoom view, when click on Select for a room, the passed Id wil null or 0, causing
+   the operation to terminate.
+3. Use Date only instead of DateTime.
+4. Ask about events.
+5. initialize the date to default

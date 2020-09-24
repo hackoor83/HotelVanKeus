@@ -1,0 +1,16 @@
+﻿@model HotelVanKeus.Models.Guest
+
+
+<div class="container">
+    <p class="lead">The following gues has been added/Edited successfully:</p>
+    <ul>
+        <li>Id (auto generated): @Model.GuestId </li>
+        <li>First Name: @Model.FirstName</li>
+        <li>Last Name: @Model.LastName </li>
+        <li>Telephone: @Model.Telephone</li>
+        <li>Email: @Model.Email</li>
+    </ul>
+</div>
+<div>
+    <a type="button" href="@Url.Action("List", "Guest")" class="btn btn-primary">Back to List</a>
+</div>

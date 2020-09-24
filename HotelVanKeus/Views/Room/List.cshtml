@@ -1,0 +1,47 @@
+﻿@model List<HotelVanKeus.Models.Room>;
+
+<h3>List of Rooms:</h3>
+@*
+    <a asp-action="create">Add Room</a>
+*@
+
+<hr class="my-2" />
+
+<div>
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th scope="col">Room Id</th>
+                <th scope="col">Room Number</th>
+                <th scope="col">Size (persons)</th>
+                <th scope="col">Type</th>
+                <th scope="col">Status</th>
+                <th scope="col">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var room in Model)
+            {
+                <tr class="table-primary">
+                    <td>@room.RoomId</td>
+                    <td>@room.RoomNumber</td>
+                    <td>@room.Size</td>
+                    <td>@room.TypeRoom</td>
+                    <td>@room.Status</td>
+
+                    <td>
+                        <a asp-action="edit" asp-route-id="@room.RoomId" type="button" class="btn-sm btn-warning">Edit</a>
+                        <a asp-action="delete" asp-route-id="@room.RoomId" type="button" class="btn-sm btn-danger">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+
+@*
+
+    <a asp-action="delete" asp-route-id="@room.RoomId" type="button" class="btn-sm btn-danger">Delete</a>
+        <a asp-action="edit" asp-route-id="@room.RoomId" type="button" class="btn-sm btn-info">Edit</a></td>
+*@
