@@ -1,9 +1,9 @@
 ﻿@model HotelVanKeus.Models.Room;
 
-<h3>Edit details of room Id: @Model.RoomId</h3>
+<h3>Edit details of room Id: @Model.Id</h3>
 
 <form method="post" class="form-group" asp-action="editroom">
-    <input type="hidden" asp-for="RoomId" value="@Model.RoomId"/>
+    <input type="hidden" asp-for="Id" value="@Model.Id"/>
     <div class="form-group">
         <label class="col-form-label">Room Number</label>
         <input type="number" class="form-control" placeholder="Between 001 and 999" value="@Model.RoomNumber" asp-for="RoomNumber">

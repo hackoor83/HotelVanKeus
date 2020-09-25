@@ -29,14 +29,14 @@
                     @foreach (var room in Model.AvailableRooms)
                     {
                         <tr class="table-primary">
-                            <td>@room.RoomId</td>
+                            <td>@room.Id</td>
                             <td>@room.RoomNumber</td>
                             <td>@room.TypeRoom</td>
                             <td>@room.Size</td>
                             <td>
-                               <a asp-action="collectguestdetails" asp-route-selectedRoomId="@room.RoomId" 
-                                  asp-route-checkin="@Model.RequiredRoom.ReservationRoom.Reservation.Checkin" 
-                                  asp-route-checkout="@Model.RequiredRoom.ReservationRoom.Reservation.Checkout"
+                               <a asp-action="collectguestdetails" asp-route-selectedId="@room.Id" 
+                                  asp-route-checkin="@Model.TempCheckin" 
+                                  asp-route-checkout="@Model.TempCheckout"
                                   type="button" class="btn-sm btn-success">Reserve</a>
                             </td>
                         </tr>

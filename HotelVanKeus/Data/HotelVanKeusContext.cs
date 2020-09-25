@@ -1,6 +1,7 @@
 ﻿using HotelVanKeus.Models;
 using Microsoft.EntityFrameworkCore;
 
+
 namespace HotelVanKeus.Data
 {
     public class HotelVanKeusContext : DbContext
@@ -16,9 +17,27 @@ namespace HotelVanKeus.Data
             optionsBuilder.UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=HotelVanKeusDB;Integrated Security=True;");
         }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<ReservationRoom>().HasKey(s => new { s.RoomId, s.ReservationId });
-        }
+        
+        //protected override void OnModelCreating(ModelBuilder modelBuilder)
+        //{
+        //    //modelBuilder.Entity<ReservationRoom>().HasKey(s => new { s.Id, s.ReservationId });
+
+        //    //modelBuilder.Entity<Reservation>().HasKey(s => new { s.Id });
+
+        //    //Using this one to prevent cascade delete from the Reservations
+        //    modelBuilder.Entity<Room>()
+        //        .HasMany(r => r.Reservations)
+        //        .WithOne(o => o.Room)
+        //        .OnDelete(DeleteBehavior.NoAction);
+
+        //    /*
+        //    modelBuilder.Entity<Reservation>()
+        //        .HasOne(b => b.Room)
+        //        .WithMany(a => a.Reservations)
+        //        .OnDelete(DeleteBehavior.NoAction);
+        //    */
+
+        //}
+    
     }
 }

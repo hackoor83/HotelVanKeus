@@ -20,16 +20,16 @@
             @foreach (var reservation in Model)
             {
                 <tr class="table-primary">
-                    <td>@reservation.ReservationId</td>
+                    <td>@reservation.Id</td>
                     <td>@reservation.Guest.FirstName</td>
                     <td>@reservation.Guest.LastName</td>
-                    <td>@reservation.ReservationRoom.Room.RoomNumber</td>
+                    <td>@reservation.Room.RoomNumber</td>
                     <td>@reservation.Checkin</td>
                     <td>@reservation.Checkout</td>
 
                     <td>
-                        <a asp-action="edit" asp-route-id="@reservation.ReservationId" type="button" class="btn-sm btn-warning">Edit</a>
-                        <a asp-action="delete" asp-route-id="@reservation.ReservationId" type="button" class="btn-sm btn-danger">Delete</a>
+                        <a asp-action="edit" asp-route-id="@reservation.Id" type="button" class="btn-sm btn-warning">Edit</a>
+                        <a asp-action="delete" asp-route-id="@reservation.Id" type="button" class="btn-sm btn-danger">Delete</a>
                     </td>
                 </tr>
             }
@@ -40,6 +40,6 @@
 
 @*
 
-    <a asp-action="delete" asp-route-id="@room.RoomId" type="button" class="btn-sm btn-danger">Delete</a>
-        <a asp-action="edit" asp-route-id="@room.RoomId" type="button" class="btn-sm btn-info">Edit</a></td>
+    <a asp-action="delete" asp-route-id="@room.Id" type="button" class="btn-sm btn-danger">Delete</a>
+        <a asp-action="edit" asp-route-id="@room.Id" type="button" class="btn-sm btn-info">Edit</a></td>
 *@

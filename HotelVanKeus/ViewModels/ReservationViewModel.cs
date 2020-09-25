@@ -12,13 +12,22 @@ namespace HotelVanKeus.ViewModels
         public readonly HotelVanKeusContext _context;
 
         public Room RequiredRoom { get; set; }
+        public Reservation NewReservation { get; set; }
         public List<Room> AvailableRooms { get; set; }
-        public Guest Guest { get; set; }
+        public List<Guest> GuestsList { get; set; }
 
-        public ReservationViewModel(Room room, List<Room> availableRooms)
+        public DateTime TempCheckin { get; set; }
+        public DateTime TempCheckout{ get; set; }
+
+        public ReservationViewModel(Reservation reservation, List<Room> availableRooms)
         {
-            RequiredRoom = room;
+            NewReservation = reservation;
             AvailableRooms = availableRooms;
+        }
+
+        public ReservationViewModel()
+        {
+                
         }
 
     }

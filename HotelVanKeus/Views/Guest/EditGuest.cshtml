@@ -1,9 +1,9 @@
 ﻿@model HotelVanKeus.Models.Guest;
 
-<h3>Edit details of guest Id: @Model.GuestId</h3>
+<h3>Edit details of guest Id: @Model.Id</h3>
 
 <form method="post" class="form-group" asp-action="editguest">
-    <input type="hidden" asp-for="GuestId" value="@Model.GuestId" />
+    <input type="hidden" asp-for="Id" value="@Model.Id" />
     <div class="form-group">
         <label class="col-form-label">First name</label>
         <input type="text" class="form-control" asp-for="FirstName" value="@Model.FirstName">

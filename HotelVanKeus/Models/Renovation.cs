@@ -6,7 +6,7 @@ namespace HotelVanKeus.Models
     public class Renovation
     {
         [Key]
-        public int RenovationJobId { get; set; }
+        public int Id { get; set; }
 
         [Required]
         public string ContactPerson { get; set; }

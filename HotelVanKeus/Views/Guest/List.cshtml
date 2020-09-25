@@ -20,14 +20,14 @@
             @foreach (var guest in Model)
             {
                 <tr class="table-primary">
-                    <td>@guest.GuestId</td>
+                    <td>@guest.Id</td>
                     <td>@guest.FirstName</td>
                     <td>@guest.LastName</td>
                     <td>@guest.Telephone</td>
                     <td>@guest.Email</td>
                     <td>
-                       <a asp-action="edit" asp-route-id="@guest.GuestId" type="button" class="btn-sm btn-warning">Edit</a>
-                       <a asp-action="delete" asp-route-id="@guest.GuestId" type="button" class="btn-sm btn-danger">Delete</a>
+                       <a asp-action="edit" asp-route-id="@guest.Id" type="button" class="btn-sm btn-warning">Edit</a>
+                       <a asp-action="delete" asp-route-id="@guest.Id" type="button" class="btn-sm btn-danger">Delete</a>
                     </td>
                 </tr>
             }
@@ -38,6 +38,6 @@
 
 
 @*
-    <a asp-action="delete" asp-route-id="@guest.GuestId" type="button" >Delete</a>
-    <a asp-action="edit" asp-route-id="@guest.GuestId" type="button" >Edit</a>
+    <a asp-action="delete" asp-route-id="@guest.Id" type="button" >Delete</a>
+    <a asp-action="edit" asp-route-id="@guest.Id" type="button" >Edit</a>
 *@

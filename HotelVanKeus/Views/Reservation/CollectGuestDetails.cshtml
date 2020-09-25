@@ -1,4 +1,4 @@
-﻿@model 
+﻿@model HotelVanKeus.ViewModels.ReservationViewModel;
 
 <h3>Add new reservation:</h3>
 <hr class="my-4" />
@@ -12,46 +12,39 @@
 
 <hr class="my-4" />
 
-<form method="post" class="form-group" asp-action="" asp-controller="Reservation">
-    <input type="hidden" asp-for="" value="" />
+<div>
+    <p class="lead">Search and select the guest:</p>
     <div>
-        <p class="lead">Booking requirements:</p>
-        <div class="form-group">
-            <label class="col-form-label">Room Size (persons)</label>
-            <select class="form-control" asp-for="">
-                <option>Select..</option>
-                <option>1</option>
-                <option>2</option>
-                <option>3 to 4</option>
-                <option>5 to 6</option>
-            </select>
-            <span asp-validation-for="Size" class="text-warning"></span>
-        </div>
-
-        <div class="form-group">
-            <label class="col-form-label">Room Type</label>
-            <select class="form-control" asp-for="">
-                <option>Select..</option>
-                <option>@HotelVanKeus.Models.TypeEnum.Budget</option>
-                <option>@HotelVanKeus.Models.TypeEnum.Normal</option>
-                <option>@HotelVanKeus.Models.TypeEnum.Luxury</option>
-            </select>
-            <span asp-validation-for="TypeRoom" class="text-warning"></span>
-        </div>
-
-        <div class="form-group">
-            <label class="col-form-label">Check in</label>
-            <input class="form-control" asp-for="ReservationRoom.Reservation.Checkin" />
-            <span asp-validation-for="ReservationRoom.Reservation.Checkin" class="text-warning"></span>
-        </div>
-
-        <div class="form-group">
-            <label class="col-form-label">Check out</label>
-            <input class="form-control" asp-for="ReservationRoom.Reservation.Checkout" />
-            <span asp-validation-for="ReservationRoom.Reservation.Checkout" class="text-warning"></span>
-        </div>
-
-        <button class="btn btn-info" type="submit">Next: Show available rooms</button>
-        <button class="btn btn-primary" asp-action="list">Cancel</button>
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">Id</th>
+                    <th scope="col">First Name</th>
+                    <th scope="col">Last Name</th>
+                    <th scope="col">Telephone</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var guest in Model.GuestsList)
+                {
+                    <tr class="table-primary">
+                        <td>@guest.Id</td>
+                        <td>@guest.FirstName</td>
+                        <td>@guest.LastName</td>
+                        <td>@guest.Telephone</td>
+                        <td>@guest.Email</td>
+                        <td>
+                            <a asp-action="ConfirmReservation" asp-route-selectedGuestId="@guest.Id"
+                               asp-route-selectedId="@Model.RequiredRoom.Id"
+                               asp-route-checkin="@Model.TempCheckin" 
+                                  asp-route-checkout="@Model.TempCheckout"
+                               type="button" class="btn-sm btn-success">Select</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
     </div>
-</form>
+</div>

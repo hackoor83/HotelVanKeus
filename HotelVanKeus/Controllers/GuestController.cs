@@ -35,7 +35,7 @@ namespace HotelVanKeus.Controllers
 
         public IActionResult Delete(int id)
         {
-            var guest = _context.Guests.FirstOrDefault(e => e.GuestId == id);
+            var guest = _context.Guests.FirstOrDefault(e => e.Id == id);
             _context.Guests.Remove(guest);
             _context.SaveChanges();
             return RedirectToAction("List");

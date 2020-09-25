@@ -7,8 +7,7 @@ namespace HotelVanKeus.Models
 {
     public class Room
     {
-        [Key]
-        public int RoomId { get; set; }
+        public int Id { get; set; }
 
         [Required]
         [Range(001, 999, ErrorMessage ="Use number between 001 and 999.")]
@@ -22,6 +21,7 @@ namespace HotelVanKeus.Models
         [Required]
         public StatusEnum Status { get; set; }
 
-        public ReservationRoom ReservationRoom { get; set; }
+        public List<Reservation> Reservations { get; set; }
+
     }
 }

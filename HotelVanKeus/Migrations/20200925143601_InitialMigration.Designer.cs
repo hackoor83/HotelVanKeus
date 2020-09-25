@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HotelVanKeus.Migrations
 {
     [DbContext(typeof(HotelVanKeusContext))]
-    [Migration("20200923215420_UpdatedModelsRelationship")]
-    partial class UpdatedModelsRelationship
+    [Migration("20200925143601_InitialMigration")]
+    partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -23,7 +23,7 @@ namespace HotelVanKeus.Migrations
 
             modelBuilder.Entity("HotelVanKeus.Models.Guest", b =>
                 {
-                    b.Property<int>("GuestId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
@@ -40,14 +40,14 @@ namespace HotelVanKeus.Migrations
                     b.Property<int>("Telephone")
                         .HasColumnType("int");
 
-                    b.HasKey("GuestId");
+                    b.HasKey("Id");
 
                     b.ToTable("Guests");
                 });
 
             modelBuilder.Entity("HotelVanKeus.Models.Reservation", b =>
                 {
-                    b.Property<int>("ReservationId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
@@ -58,38 +58,24 @@ namespace HotelVanKeus.Migrations
                     b.Property<DateTime>("Checkout")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("GuestId")
+                    b.Property<int?>("GuestId")
                         .HasColumnType("int");
 
-                    b.HasKey("ReservationId");
+                    b.Property<int?>("RoomId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
 
                     b.HasIndex("GuestId");
+
+                    b.HasIndex("RoomId");
 
                     b.ToTable("Reservations");
                 });
 
-            modelBuilder.Entity("HotelVanKeus.Models.ReservationRoom", b =>
-                {
-                    b.Property<int>("RoomId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ReservationId")
-                        .HasColumnType("int");
-
-                    b.HasKey("RoomId", "ReservationId");
-
-                    b.HasIndex("ReservationId")
-                        .IsUnique();
-
-                    b.HasIndex("RoomId")
-                        .IsUnique();
-
-                    b.ToTable("ReservationRoom");
-                });
-
             modelBuilder.Entity("HotelVanKeus.Models.Room", b =>
                 {
-                    b.Property<int>("RoomId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
@@ -108,7 +94,7 @@ namespace HotelVanKeus.Migrations
                     b.Property<int>("TypeRoom")
                         .HasColumnType("int");
 
-                    b.HasKey("RoomId");
+                    b.HasKey("Id");
 
                     b.ToTable("Rooms");
                 });
@@ -116,25 +102,12 @@ namespace HotelVanKeus.Migrations
             modelBuilder.Entity("HotelVanKeus.Models.Reservation", b =>
                 {
                     b.HasOne("HotelVanKeus.Models.Guest", "Guest")
-                        .WithMany()
-                        .HasForeignKey("GuestId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("HotelVanKeus.Models.ReservationRoom", b =>
-                {
-                    b.HasOne("HotelVanKeus.Models.Reservation", "Reservation")
-                        .WithOne("ReservationRoom")
-                        .HasForeignKey("HotelVanKeus.Models.ReservationRoom", "ReservationId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .WithMany("Reservations")
+                        .HasForeignKey("GuestId");
 
                     b.HasOne("HotelVanKeus.Models.Room", "Room")
-                        .WithOne("ReservationRoom")
-                        .HasForeignKey("HotelVanKeus.Models.ReservationRoom", "RoomId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .WithMany("Reservations")
+                        .HasForeignKey("RoomId");
                 });
 #pragma warning restore 612, 618
         }

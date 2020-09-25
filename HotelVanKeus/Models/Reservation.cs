@@ -6,14 +6,9 @@ namespace HotelVanKeus.Models
 {
     public class Reservation
     {
-        public Reservation()
-        {
-            Checkin = DateTime.Now;
-            Checkout = DateTime.Now;
-        }
-
+       
         [Key]
-        public int ReservationId { get; set; }
+        public int Id { get; set; }
        
         [Required]
         [DataType(DataType.Date)]
@@ -23,9 +18,29 @@ namespace HotelVanKeus.Models
         [DataType(DataType.Date)]
         public DateTime Checkout { get; set; }
 
-        [Required]
-        public Guest Guest { get; set; }
+        //public int GuestId { get; set; }
+        public Guest Guest { get; set; } = new Guest();
 
-        public ReservationRoom ReservationRoom { get; set; }
+        //[ForeignKey("Id")]
+        //public int Id { get; set; }
+        public Room Room { get; set; } = new Room();
+
+        //public ReservationRoom ReservationRoom { get; set; }
+
+        public Reservation()
+        {
+            Checkin = DateTime.Now;
+            Checkout = DateTime.Now;
+        }
+
+        public Reservation(Guest guest, Room room, DateTime checkin, DateTime checkout)
+        {
+            //GuestId = guest.Id;
+            Guest = guest;
+            //Id = room.Id;
+            Room = room;
+            Checkin = checkin;
+            Checkout = checkout;
+        }
     }
 }
