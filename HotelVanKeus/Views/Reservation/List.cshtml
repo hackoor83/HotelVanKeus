@@ -24,8 +24,8 @@
                     <td>@reservation.Guest.FirstName</td>
                     <td>@reservation.Guest.LastName</td>
                     <td>@reservation.Room.RoomNumber</td>
-                    <td>@reservation.Checkin</td>
-                    <td>@reservation.Checkout</td>
+                    <td>@reservation.Checkin.ToString("dd / MMM / yyyy")</td>
+                    <td>@reservation.Checkout.ToString("dd / MMM / yyyy")</td>
 
                     <td>
                         <a asp-action="edit" asp-route-id="@reservation.Id" type="button" class="btn-sm btn-warning">Edit</a>

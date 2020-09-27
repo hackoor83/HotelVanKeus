@@ -18,17 +18,24 @@ namespace HotelVanKeus.Data
         }
 
         
-        //protected override void OnModelCreating(ModelBuilder modelBuilder)
-        //{
-        //    //modelBuilder.Entity<ReservationRoom>().HasKey(s => new { s.Id, s.ReservationId });
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
 
-        //    //modelBuilder.Entity<Reservation>().HasKey(s => new { s.Id });
+            //    //modelBuilder.Entity<Reservation>().HasKey(s => new { s.Id });
 
-        //    //Using this one to prevent cascade delete from the Reservations
-        //    modelBuilder.Entity<Room>()
-        //        .HasMany(r => r.Reservations)
-        //        .WithOne(o => o.Room)
-        //        .OnDelete(DeleteBehavior.NoAction);
+            //    //Using this one to prevent cascade delete from the Reservations
+            modelBuilder.Entity<Reservation>()
+                .HasOne(r => r.Room)
+                .WithMany(r => r.Reservations)
+                .HasForeignKey("RoomId");
+                //.OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<Reservation>()
+                .HasOne(g => g.Guest)
+                .WithMany(r => r.Reservations)
+                .HasForeignKey("GuestId");
+
+                //.OnDelete(DeleteBehavior.NoAction);
 
         //    /*
         //    modelBuilder.Entity<Reservation>()
@@ -37,7 +44,7 @@ namespace HotelVanKeus.Data
         //        .OnDelete(DeleteBehavior.NoAction);
         //    */
 
-        //}
+        }
     
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using HotelVanKeus.Data;
 using HotelVanKeus.Models;
@@ -17,9 +18,18 @@ namespace HotelVanKeus.Controllers
         {
             _context = context;
         }
+
+        [HttpGet]
         public IActionResult List()
         {
-            var reservationsList = _context.Reservations.ToList();
+            var reservationsList = _context.Reservations
+                .Include(r => r.Room)
+                .Include(g => g.Guest)
+                .ToList();
+
+            //To make the room available after the checkout date:
+            ResetRoomStatus();
+
             return View("List", reservationsList);
         }
 
@@ -29,24 +39,24 @@ namespace HotelVanKeus.Controllers
 
 
         //Step 1: Collect room requirements
-
-
         [HttpGet]
         public IActionResult CollectRoomRequirements() 
         {
+
+            //To make the room available after the checkout date:
+            ResetRoomStatus();
+
             return View("CollectRoomRequirements");
         }
 
 
         //Step 2: Get list of available rooms that matches with room requirements
 
-
         [HttpPost]
         public IActionResult GetAvailableRooms(Reservation tempReservation)
         {
-            Console.WriteLine($"In GetAvailableRooms action. The checkin is: {tempReservation.Checkin}, and checkout is: {tempReservation.Checkout}.");
-            //var roomsList = _context.Rooms.Include(r => r.ReservationRoom).ToList();
-            var roomsList = _context.Rooms.ToList();
+            var roomsList = _context.Rooms.Include(r => r.Reservations).ToList();
+            //var roomsList = _context.Rooms.ToList();
 
             var availableRooms = roomsList.Where(room => room.Size.Equals(tempReservation.Room.Size))
                 .Where(room => room.Status.Equals(tempReservation.Room.Status))
@@ -60,7 +70,6 @@ namespace HotelVanKeus.Controllers
                 //TO DO: return error message
             }
 
-            //var reservationViewModel = new ReservationViewModel(reservationWithRequiredRoom, availableRooms);
             var newReservationViewModel = new ReservationViewModel
             {
                 TempCheckin = tempReservation.Checkin,
@@ -69,26 +78,16 @@ namespace HotelVanKeus.Controllers
                 NewReservation = tempReservation
             };
 
-            Console.WriteLine($"In GetAvailableRooms action, in the newReservationViewModel. The checkin is: {newReservationViewModel.TempCheckin}, and checkout is: {newReservationViewModel.TempCheckout}.\n");
-
-
             return View("ListOfAvailableRooms", newReservationViewModel);
         }
 
 
         //Step 3: Link selected room with guest
         [HttpGet]
-        //public IActionResult CollectGuestDetails(int selectedRoomId, DateTime checkin, DateTime checkout)
         public IActionResult CollectGuestDetails(int selectedRoomId, string checkin, string checkout)
         {
-            Console.WriteLine($"In CollectGuestDetails action. The parameter selectedRoomId is: {selectedRoomId}");
-            Console.WriteLine($"In CollectGuestDetails action. The parameter checkin is: {checkin.GetType()}, is of type: {checkin.GetType()}");
-            Console.WriteLine($"In CollectGuestDetails action. The parameter checkout is: {checkout}, is of type: {checkout.GetType()}");
 
             Room selectedRoom = _context.Rooms.Find(selectedRoomId);
-
-            Console.WriteLine($"In CollectGuestDetails action. The selectedRoom Room created. The roomId is: {selectedRoom.Id}");
-
 
             var listOfGuests = _context.Guests.ToList();
 
@@ -100,10 +99,7 @@ namespace HotelVanKeus.Controllers
                 TempCheckout = DateTime.Parse(checkout)
             };
 
-            Console.WriteLine($"In CollectGuestDetails action. The lastViewModel created. Checkin: {lastViewModel.TempCheckin}," +
-                $"Checkout: {lastViewModel.TempCheckout}, room id: {lastViewModel.RequiredRoom.Id}");
-
-
+           
             return View("CollectGuestDetails", lastViewModel);
         }
 
@@ -115,16 +111,7 @@ namespace HotelVanKeus.Controllers
             var guestReservation = _context.Guests.Find(selectedGuestId);
             var roomReservation = _context.Rooms.Find(selectedRoomId);
 
-            Console.WriteLine($"In ConfirmReservation action. The guestReservation are: guest id: {guestReservation.Id}, first name: {guestReservation.FirstName}, " +
-                $"last name: {guestReservation.LastName}");
-            
-            Console.WriteLine($"In ConfirmReservation action. The roomReservation are: room id: {roomReservation.Id}, room number: {roomReservation.RoomNumber}");
-
             var confirmedReservation = new Reservation(guestReservation, roomReservation, DateTime.Parse(checkin), DateTime.Parse(checkout));
-
-            Console.WriteLine($"In the ConfirmReservation action. New reservation created. Guest id: {confirmedReservation.Guest.Id}," +
-                $"guest name: {confirmedReservation.Guest.FirstName} {confirmedReservation.Guest.LastName}. Room id: {confirmedReservation.Room.Id}, number: {confirmedReservation.Room.RoomNumber}," +
-                $"checkin: {confirmedReservation.Checkin}, checkout: {confirmedReservation.Checkout}");
 
             _context.Reservations.Add(confirmedReservation);
             _context.SaveChanges();
@@ -138,7 +125,7 @@ namespace HotelVanKeus.Controllers
             var reservation = _context.Reservations.FirstOrDefault(e => e.Id == id);
             _context.Reservations.Remove(reservation);
             _context.SaveChanges();
-            return RedirectToAction("List");
+            return RedirectToAction(nameof(List));
         }
 
         public IActionResult Edit(int id)
@@ -160,5 +147,20 @@ namespace HotelVanKeus.Controllers
             return View("ConfirmationModal", reservation);
         }
 
+        public void ResetRoomStatus()
+        {
+            var reservationsList = _context.Reservations
+                .Include(r => r.Room)
+                .Include(g => g.Guest)
+                .ToList();
+
+            foreach (var reservation in reservationsList)
+            {
+                if (DateTime.Now > reservation.Checkout & reservation.Room.Status == StatusEnum.Reserved)
+                {
+                    reservation.Room.Status = StatusEnum.Available;
+                }
+            }
+        }
     }
 }

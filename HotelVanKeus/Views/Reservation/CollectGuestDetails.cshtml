@@ -3,11 +3,11 @@
 <h3>Add new reservation:</h3>
 <hr class="my-4" />
 
-<h5>Step 1: Add guest details:</h5>
+<h5>Step 3: Select a guest to add to the booking:</h5>
 <hr class="my-4" />
 
 <div class="progress">
-    <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" style="width: 75%"></div>
+    <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 75%"></div>
 </div>
 
 <hr class="my-4" />
@@ -39,7 +39,7 @@
                             <a asp-action="ConfirmReservation" asp-route-selectedGuestId="@guest.Id"
                                asp-route-selectedRoomId="@Model.RequiredRoom.Id"
                                asp-route-checkin="@Model.TempCheckin" 
-                                  asp-route-checkout="@Model.TempCheckout"
+                               asp-route-checkout="@Model.TempCheckout"
                                type="button" class="btn-sm btn-success">Select</a>
                         </td>
                     </tr>
@@ -47,4 +47,8 @@
             </tbody>
         </table>
     </div>
+</div>
+
+<div>    
+    <a type="button" href="@Url.Action("collectroomrequirements", "Reservation")" class="btn btn-warning" >Start again</a>
 </div>

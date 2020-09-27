@@ -32,6 +32,9 @@ namespace HotelVanKeus.Models
             Room = room;
             Checkin = checkin;
             Checkout = checkout;
+
+            //change the room status:
+            Room.Status = StatusEnum.Reserved;
         }
     }
 }

@@ -1,23 +1,49 @@
 ﻿@model HotelVanKeus.Models.Reservation
 
+    <h3>Add new reservation:</h3>
+    <hr class="my-4" />
 
-<div class="container">
-    <p class="lead">The following reservation has been added/Edited successfully:</p>
-    <ul>
-        <li>Id (auto generated): @Model.Id </li>
-        <li>First Name: @Model.Guest.FirstName</li>
-        <li>Last Name: @Model.Guest.LastName</li>
-        <li>Telephone: @Model.Guest.Telephone</li>
-        <li>Email: @Model.Guest.Email</li>
-        <li>Check in: @Model.Checkin</li>
-        <li>Check out: @Model.Checkout</li>
-        <li>Room Id: @Model.Room.Id</li>
-        <li>Room number: @Model.Room.RoomNumber</li>
-        <li>Room size: @Model.Room.Size</li>
-        <li>Room type: @Model.Room.TypeRoom</li>
-    </ul>
-</div>
+    <h5>Step 4: Reservation confirmed:</h5>
+    <hr class="my-4" />
+
+    <div class="progress">
+        <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%"></div>
+    </div>
+
+    <hr class="my-4" />
+
+    <div class="container">
+        <p class="lead">The following reservation has been added/Edited successfully:</p>
+
+        <div>
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th scope="row">Reservation Id</th>
+                        <th scope="row">Guest First Name</th>
+                        <th scope="row">Guest Last Name</th>
+                        <th scope="row">Room Number</th>
+                        <th scope="row">Checkin</th>
+                        <th scope="row">Checkout</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="table-primary">
+                        <td>@Model.Id</td>
+                        <td>@Model.Guest.FirstName</td>
+                        <td>@Model.Guest.LastName</td>
+                        <td>@Model.Room.RoomNumber</td>
+                        <td>@Model.Checkin</td>
+                        <td>@Model.Checkout</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
 <div>
-    <a type="button" href="@Url.Action("List", "Reservation")" class="btn btn-primary">Back to List</a>
+    <a type="button" href="@Url.Action("Edit", "Reservation")" class="btn btn-primary">Edit reservation</a>
+    <button class="btn btn-primary" asp-action="list">Finish and go to reservations list</button>
+
 </div>
 
