@@ -37,7 +37,7 @@
                         <td>@guest.Email</td>
                         <td>
                             <a asp-action="ConfirmReservation" asp-route-selectedGuestId="@guest.Id"
-                               asp-route-selectedId="@Model.RequiredRoom.Id"
+                               asp-route-selectedRoomId="@Model.RequiredRoom.Id"
                                asp-route-checkin="@Model.TempCheckin" 
                                   asp-route-checkout="@Model.TempCheckout"
                                type="button" class="btn-sm btn-success">Select</a>

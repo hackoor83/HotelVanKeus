@@ -34,7 +34,7 @@
                             <td>@room.TypeRoom</td>
                             <td>@room.Size</td>
                             <td>
-                               <a asp-action="collectguestdetails" asp-route-selectedId="@room.Id" 
+                               <a asp-action="collectguestdetails" asp-route-selectedRoomId="@room.Id" 
                                   asp-route-checkin="@Model.TempCheckin" 
                                   asp-route-checkout="@Model.TempCheckout"
                                   type="button" class="btn-sm btn-success">Reserve</a>
