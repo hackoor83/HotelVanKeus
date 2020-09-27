@@ -55,9 +55,6 @@ namespace HotelVanKeus.Controllers
                                room.Reservations.Any(item => item.Checkout < tempReservation.Checkin))
                 .ToList();
 
-            //.Where(room => room.ReservationRoom == null || (room.ReservationRoom.Reservation.Checkin > reservationWithRequiredRoom.ReservationRoom.Reservation.Checkout ||
-
-
             if (availableRooms.Count() == 0)
             {
                 //TO DO: return error message
@@ -72,7 +69,7 @@ namespace HotelVanKeus.Controllers
                 NewReservation = tempReservation
             };
 
-            Console.WriteLine($"In GetAvailableRooms action, in the newReservationViewModel. The checkin is: {newReservationViewModel.TempCheckin}, and checkout is: {newReservationViewModel.TempCheckout}.");
+            Console.WriteLine($"In GetAvailableRooms action, in the newReservationViewModel. The checkin is: {newReservationViewModel.TempCheckin}, and checkout is: {newReservationViewModel.TempCheckout}.\n");
 
 
             return View("ListOfAvailableRooms", newReservationViewModel);
@@ -81,9 +78,12 @@ namespace HotelVanKeus.Controllers
 
         //Step 3: Link selected room with guest
         [HttpGet]
-        public IActionResult CollectGuestDetails(int selectedRoomId, DateTime checkin, DateTime checkout)
+        //public IActionResult CollectGuestDetails(int selectedRoomId, DateTime checkin, DateTime checkout)
+        public IActionResult CollectGuestDetails(int selectedRoomId, string checkin, string checkout)
         {
             Console.WriteLine($"In CollectGuestDetails action. The parameter selectedRoomId is: {selectedRoomId}");
+            Console.WriteLine($"In CollectGuestDetails action. The parameter checkin is: {checkin.GetType()}, is of type: {checkin.GetType()}");
+            Console.WriteLine($"In CollectGuestDetails action. The parameter checkout is: {checkout}, is of type: {checkout.GetType()}");
 
             Room selectedRoom = _context.Rooms.Find(selectedRoomId);
 
@@ -96,16 +96,21 @@ namespace HotelVanKeus.Controllers
             {
                 GuestsList = listOfGuests,
                 RequiredRoom = selectedRoom,
-                TempCheckin = checkin,
-                TempCheckout = checkout
+                TempCheckin = DateTime.Parse(checkin),
+                TempCheckout = DateTime.Parse(checkout)
             };
+
+            Console.WriteLine($"In CollectGuestDetails action. The lastViewModel created. Checkin: {lastViewModel.TempCheckin}," +
+                $"Checkout: {lastViewModel.TempCheckout}, room id: {lastViewModel.RequiredRoom.Id}");
+
 
             return View("CollectGuestDetails", lastViewModel);
         }
 
+
         //Step 4: Combine all info and confirm reservation
         [HttpGet]
-        public IActionResult ConfirmReservation(int selectedGuestId, int selectedRoomId, DateTime checkin, DateTime checkout)
+        public IActionResult ConfirmReservation(int selectedGuestId, int selectedRoomId, string checkin, string checkout)
         {
             var guestReservation = _context.Guests.Find(selectedGuestId);
             var roomReservation = _context.Rooms.Find(selectedRoomId);
@@ -113,10 +118,9 @@ namespace HotelVanKeus.Controllers
             Console.WriteLine($"In ConfirmReservation action. The guestReservation are: guest id: {guestReservation.Id}, first name: {guestReservation.FirstName}, " +
                 $"last name: {guestReservation.LastName}");
             
-            Console.WriteLine($"In ConfirmReservation action. The roomReservation are: room id: {roomReservation.Id}, room number: {roomReservation.RoomNumber}, " +
-                $"last name: {guestReservation.LastName}");
+            Console.WriteLine($"In ConfirmReservation action. The roomReservation are: room id: {roomReservation.Id}, room number: {roomReservation.RoomNumber}");
 
-            var confirmedReservation = new Reservation(guestReservation, roomReservation, checkin, checkout);
+            var confirmedReservation = new Reservation(guestReservation, roomReservation, DateTime.Parse(checkin), DateTime.Parse(checkout));
 
             Console.WriteLine($"In the ConfirmReservation action. New reservation created. Guest id: {confirmedReservation.Guest.Id}," +
                 $"guest name: {confirmedReservation.Guest.FirstName} {confirmedReservation.Guest.LastName}. Room id: {confirmedReservation.Room.Id}, number: {confirmedReservation.Room.RoomNumber}," +
@@ -124,7 +128,7 @@ namespace HotelVanKeus.Controllers
 
             _context.Reservations.Add(confirmedReservation);
             _context.SaveChanges();
-            return RedirectToAction("ConfirmationModal", confirmedReservation);
+            return View("ConfirmationModal", confirmedReservation);
         }
 
         //================================================================

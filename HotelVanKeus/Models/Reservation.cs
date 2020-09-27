@@ -17,9 +17,12 @@ namespace HotelVanKeus.Models
         [DataType(DataType.Date)]
         public DateTime Checkout { get; set; }
 
-        public Guest Guest { get; set; } = new Guest();
+        //public Guest Guest { get; set; } = new Guest();
 
-        public Room Room { get; set; } = new Room();
+        public Guest Guest { get; set; }
+
+        //public Room Room { get; set; } = new Room();
+        public Room Room { get; set; }
 
         public Reservation() {}
 
