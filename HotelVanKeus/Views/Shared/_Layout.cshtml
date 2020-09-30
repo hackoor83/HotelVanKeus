@@ -7,6 +7,7 @@
     <link rel="stylesheet" type="text/css" href="~/lib/bootswatch/darkly/bootstrap.css" />
     <script src="~/lib/jquery/jquery.js"></script>
     <script src="~/lib/bootstrap/js/bootstrap.js"></script>
+    @RenderSection("scripts", required: false)
     @*<link href="~/font-awesome/css/fontawesome.min.css" rel="stylesheet" />*@
     @*<script src="~/popper.js/cjs/popper.min.js"></script>*@
 
@@ -23,19 +24,11 @@
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Rooms</a>
                     <div class="dropdown-menu">
-                        <a class="dropdown-item" href="@Url.Action("List", "Room")">List rooms</a>
+                        <a class="dropdown-item" href="@Url.Action("List", "Room")">List rooms</a>                        
                         <a class="dropdown-item" href="@Url.Action("Create", "Room")">New room</a>
                     </div>
                 </li>
-                @*
-        <li class="nav-item active">
-            <a class="nav-link" href="@Url.Action("List", "Room")">Home <span class="sr-only">(current)</span></a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="@Url.Action("Create", "Room")">Add Room</a>
-        </li>
-
-                *@
+              
 
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Guests</a>
@@ -56,31 +49,29 @@
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Renovations</a>
                     <div class="dropdown-menu">
-                        <a class="dropdown-item" href="@Url.Action("", "")">List renovations</a>
-                        <a class="dropdown-item" href="@Url.Action("", "")">New renovation job</a>
+                        <a class="dropdown-item" href="@Url.Action("ListOfOngoingRenovations", "Reservation")">List renovations</a>
+                        <a class="dropdown-item" href="@Url.Action("ListOfAvailableRooms", "Reservation")">New renovation job</a>
                     </div>
                 </li>
 
-                
                 <li class="nav-item">
                     <a class="nav-link" href="#">About</a>
                 </li>
-                <li class="nav-item dropdown">
+                @*<li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">List Rooms</a>
                     <div class="dropdown-menu">
                         <a class="dropdown-item" href="#">All Rooms</a>
                         <a class="dropdown-item" href="#">Available rooms</a>
-                        <a class="dropdown-item" href="#">Occupied rooms</a>
                         <a class="dropdown-item" href="#">Booked rooms</a>
                         <a class="dropdown-item" href="#">Under renovation rooms</a>
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="#">Separated link</a>
                     </div>
-                </li>
+                </li>*@
             </ul>
-            <form class="form-inline my-2 my-lg-0">
-                <input class="form-control mr-sm-2" type="text" placeholder="Search">
-                <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
+            <form method="get" class="form-inline my-2 my-lg-0" asp-action="Search" asp-controller="Guest">
+                <input class="form-control mr-sm-2" type="text" name="searchInput" placeholder="Search guests">
+                <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search Guest</button>
             </form>
         </div>
     </nav>

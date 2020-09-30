@@ -33,17 +33,19 @@
                         <td>@Model.Guest.FirstName</td>
                         <td>@Model.Guest.LastName</td>
                         <td>@Model.Room.RoomNumber</td>
-                        <td>@Model.Checkin</td>
-                        <td>@Model.Checkout</td>
+                        <td>@Model.Checkin.ToString("dd / MMM / yyyy")</td>
+                        <td>@Model.Checkout.ToString("dd / MMM / yyyy")</td>
                     </tr>
                 </tbody>
             </table>
         </div>
+
+        <div>
+            @*<a type="button" href="@Url.Action("Edit", "Reservation")" class="btn btn-primary">Edit reservation</a>*@
+            <a type="button" class="btn btn-primary" asp-action="list">Finish and go to reservations list</a>
+
+        </div>
+
     </div>
 
-<div>
-    <a type="button" href="@Url.Action("Edit", "Reservation")" class="btn btn-primary">Edit reservation</a>
-    <button class="btn btn-primary" asp-action="list">Finish and go to reservations list</button>
-
-</div>
 

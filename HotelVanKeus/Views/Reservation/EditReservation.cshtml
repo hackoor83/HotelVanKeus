@@ -1,5 +1,30 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
+﻿@model HotelVanKeus.Models.Reservation;
+
+
+<h3>Edit details of reservation</h3>
+
+<form method="post" class="form-group" asp-action="editroom">
+    <input type="hidden" asp-for="Id" value="@Model.Id" />
+
+    <button class="btn btn-success" type="submit">Save changes</button>
+    <button class="btn btn-primary" asp-action="list">Cancel</button>
+</form>
+
+@section scripts{ 
+
+    <script type="text/javascript">
+
+    $(document).ready(function(){
+
+        $('#btnclick').click(function () {
+
+                alert("You clicked !");
+
+        });
+
+    });
+
+    </script>
+
 }
+

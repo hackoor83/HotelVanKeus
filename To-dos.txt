@@ -5,8 +5,29 @@ To do:
 
 Issues:
 1. Add modal
-2. In the SelectRoom view, when click on Select for a room, the passed Id wil null or 0, causing
-   the operation to terminate.
-3. Use Date only instead of DateTime.
-4. Ask about events.
-5. initialize the date to default
+
+2. In the List of available rooms, the Renovate button should be visible only to Available rooms.
+
+3. Make reservations log
+4. Make renovations log
+5. Make reservations history view per guest
+
+6. In Guests list, add a button to send the guest an email about an offer.
+7. In create guest form, add method to check if the guest is already in the database.
+
+8. In room, add functionality to query room availability at specific dates, period of time.
+9. In room list view, add a button to show a list of previous and projected reservations of this specific room. Showing also the free days.
+10. Add view for input: Room type, and/or size, and dates => List of available rooms based on the input data.
+11. In room booking, add functionality to propose alternatives if the required room specifications where not found.
+
+12. In the reservation process, add a step to search for the guest before starting the booking.
+
+13. For renovations, need to make is a reservation entity in order to provide dates.
+
+14. In rooms list, when Delete button is clicked, an if statement should be executed, so that ONLY blocked rooms for renovations can be deleted. (i.e. cannot delete Available or Reserved rooms).
+
+15. In all entities, confirmation of removal.
+
+16. In bookings, make a search for booking number, or guest details.
+
+17. In reservations list, in ongoing reservations, add a button to Checkout the guest, and release the room making it available. In this process, check the payment, or calculate the price.

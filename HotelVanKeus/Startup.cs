@@ -22,12 +22,7 @@ namespace HotelVanKeus
         {
             services.AddControllersWithViews();
 
-            //services.AddMvc();
-
             //Other services to be added:
-            //services.AddScoped<IRoomRepository, MockRoomsRepository>();
-
-            //services.AddDbContext<HotelVanKeusContext>(options => options.UseInMemoryDatabase("Hotel Rooms"));
 
             services.AddDbContext<HotelVanKeusContext>(options => {
                 options.UseSqlServer(Configuration.GetConnectionString("Default"));

@@ -1,0 +1,40 @@
+﻿@model List<HotelVanKeus.Models.Room>
+
+<h3>List of Renovations:</h3>
+
+<hr class="my-2" />
+
+<form>
+    <div>
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">Room Id</th>
+                    <th scope="col">Room number</th>
+                    <th scope="col">Room Status</th>
+                    <th scope="col">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var room in Model)
+                {
+                <tr class="table-primary">
+                    <td>@room.Id.ToString()</td>
+                    <td>@room.RoomNumber.ToString()</td>
+                    <td>@room.Status.ToString()</td>
+                    <td>
+                        <button class="btn-sm btn-info"
+                                asp-action="ChangeRenovationStatus"
+                                asp-controller="Reservation"
+                                asp-route-id="@room.Id">
+                            Complete renovation job
+                        </button>
+                    </td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <hr class="my-4" />
+</form>

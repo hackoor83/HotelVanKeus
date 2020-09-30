@@ -33,16 +33,15 @@ namespace HotelVanKeus.Controllers
             return View("List", reservationsList);
         }
 
+
         //===============================================================
         //Reservation process
         //===============================================================
-
 
         //Step 1: Collect room requirements
         [HttpGet]
         public IActionResult CollectRoomRequirements() 
         {
-
             //To make the room available after the checkout date:
             ResetRoomStatus();
 
@@ -51,24 +50,30 @@ namespace HotelVanKeus.Controllers
 
 
         //Step 2: Get list of available rooms that matches with room requirements
-
         [HttpPost]
         public IActionResult GetAvailableRooms(Reservation tempReservation)
         {
+
+            Console.WriteLine($"In GetAvailableRooms action. The parameter tempReservation. Room size: {tempReservation.Room.Size}, Room status: {tempReservation.Room.Status}");
+
             var roomsList = _context.Rooms.Include(r => r.Reservations).ToList();
-            //var roomsList = _context.Rooms.ToList();
 
             var availableRooms = roomsList.Where(room => room.Size.Equals(tempReservation.Room.Size))
-                .Where(room => room.Status.Equals(tempReservation.Room.Status))
-                .Where(room => room.TypeRoom.Equals(tempReservation.Room.TypeRoom))
-                .Where(room => room.Reservations == null || room.Reservations.Any(item => item.Checkin > tempReservation.Checkout)  &&
-                               room.Reservations.Any(item => item.Checkout < tempReservation.Checkin))
-                .ToList();
-
-            if (availableRooms.Count() == 0)
+                                          .Where(room => room.Status.Equals(tempReservation.Room.Status))
+                                          .Where(room => room.TypeRoom.Equals(tempReservation.Room.TypeRoom))
+                                          //.Where(room => room.Reservations == null || room.Reservations.Any(item => item.Checkin > tempReservation.Checkout) &&
+                                          //                                            room.Reservations.Any(item => item.Checkout < tempReservation.Checkin))                              
+                                          .ToList();
+            
+            foreach (var room in availableRooms)
             {
-                //TO DO: return error message
+                Console.WriteLine($"In GetAvailableRooms action. This is the availableRooms list. This is room: {room.Id}");
             }
+
+            //if (availableRooms.Count() == 0)
+            //{
+                //TO DO: return error message
+            //}
 
             var newReservationViewModel = new ReservationViewModel
             {
@@ -77,6 +82,13 @@ namespace HotelVanKeus.Controllers
                 AvailableRooms = availableRooms,
                 NewReservation = tempReservation
             };
+
+            Console.WriteLine($"In Get available rooms action. temp checkin: {newReservationViewModel.TempCheckin}");
+
+            foreach(var room in newReservationViewModel.AvailableRooms)
+            {
+                Console.WriteLine($"In the foreach loop: {room.Id}");
+            }
 
             return View("ListOfAvailableRooms", newReservationViewModel);
         }
@@ -98,7 +110,6 @@ namespace HotelVanKeus.Controllers
                 TempCheckin = DateTime.Parse(checkin),
                 TempCheckout = DateTime.Parse(checkout)
             };
-
            
             return View("CollectGuestDetails", lastViewModel);
         }
@@ -120,13 +131,18 @@ namespace HotelVanKeus.Controllers
 
         //================================================================
 
-        public IActionResult Delete(int id)
+        public IActionResult Delete(int id, int roomId)
         {
-            var reservation = _context.Reservations.FirstOrDefault(e => e.Id == id);
+            var reservation = _context.Reservations.Find(id);
+            var reservedRoom = _context.Rooms.Find(roomId);
+
+            reservedRoom.Status = StatusEnum.Available;
+
             _context.Reservations.Remove(reservation);
             _context.SaveChanges();
             return RedirectToAction(nameof(List));
         }
+
 
         public IActionResult Edit(int id)
         {
@@ -161,6 +177,51 @@ namespace HotelVanKeus.Controllers
                     reservation.Room.Status = StatusEnum.Available;
                 }
             }
+            _context.SaveChanges();
         }
+
+        //============================================================
+        //      Renovations
+        //============================================================
+
+        [HttpGet]
+        public IActionResult ListOfAvailableRooms()
+        {
+            var listOfRooms = _context.Rooms
+                .Where(room => room.Status == StatusEnum.Available)
+                .ToList();
+
+            return View("ListRoomsToRenovate", listOfRooms);
+        }
+
+        [HttpGet]
+        public IActionResult ChangeRenovationStatus(int id)
+        {
+            var selectedRoom = _context.Rooms.Find(id);
+
+            if(selectedRoom.Status == StatusEnum.Available)
+            {
+                selectedRoom.Status = StatusEnum.Renovation;
+
+            }else if(selectedRoom.Status == StatusEnum.Renovation)
+            {
+                selectedRoom.Status = StatusEnum.Available;
+            }
+
+            _context.SaveChanges();
+
+            return View("RenovationConfirmationModal", selectedRoom);
+        }
+
+        [HttpGet]
+        public IActionResult ListOfOngoingRenovations()
+        {
+            var renovationsList = _context.Rooms
+                .Where(room => room.Status.Equals(StatusEnum.Renovation))
+                .ToList();
+
+            return View("ListOfOngoingRenovations", renovationsList);
+        }
+
     }
 }

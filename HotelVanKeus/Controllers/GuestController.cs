@@ -1,6 +1,7 @@
 ﻿using HotelVanKeus.Data;
 using HotelVanKeus.Models;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Linq;
 
 namespace HotelVanKeus.Controllers
@@ -58,6 +59,25 @@ namespace HotelVanKeus.Controllers
         public IActionResult ConfirmationModal(Guest guest)
         {
             return View("ConfirmationModal", guest);
+        }
+
+        //Search for guest
+        [HttpGet]
+        public IActionResult Search(string searchInput)
+        {
+            Console.WriteLine($"In Search action. The searchInput is: {searchInput}");
+
+            //var listOfMatches = _context.Guests
+            //    .Where(guest => guest.FirstName.Contains(searchInput))
+            //    .ToList();
+
+            var listOfMatches = _context.Guests
+                .Where(guest => guest.Id.Equals(searchInput) | guest.FirstName.Contains(searchInput) | guest.LastName.Contains(searchInput) |
+                guest.Telephone.Equals(searchInput) | guest.Postcode.Contains(searchInput) | guest.Email.Contains(searchInput) | 
+                guest.Address.Contains(searchInput) | guest.City.Contains(searchInput) | guest.Country.Contains(searchInput))
+                .ToList();
+
+            return View("List", listOfMatches);
         }
 
     }

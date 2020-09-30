@@ -14,6 +14,7 @@
                 <th scope="col">Room Number</th>
                 <th scope="col">Checkin</th>
                 <th scope="col">Checkout</th>
+                <th scope="col">Action</th>
             </tr>
         </thead>
         <tbody>
@@ -28,8 +29,8 @@
                     <td>@reservation.Checkout.ToString("dd / MMM / yyyy")</td>
 
                     <td>
-                        <a asp-action="edit" asp-route-id="@reservation.Id" type="button" class="btn-sm btn-warning">Edit</a>
-                        <a asp-action="delete" asp-route-id="@reservation.Id" type="button" class="btn-sm btn-danger">Delete</a>
+                        <button class="btn-sm btn-warning" id="editResBtn" data-target="#unableToEditModal">Edit</button>
+                        <a class="btn-sm btn-danger" id="deleteResBtn"asp-action="delete" asp-route-id="@reservation.Id" asp-route-roomId="@reservation.Room.Id" type="button" >Cancel</a>
                     </td>
                 </tr>
             }
@@ -38,8 +39,66 @@
 </div>
 
 
-@*
 
-    <a asp-action="delete" asp-route-id="@room.Id" type="button" class="btn-sm btn-danger">Delete</a>
-        <a asp-action="edit" asp-route-id="@room.Id" type="button" class="btn-sm btn-info">Edit</a></td>
-*@
+@*Modal*@
+
+@section scripts{
+
+    <script type="text/javascript">
+
+    $(document).ready(function(){
+        $('#editResBtn').click(function () {
+            $("#unableToEditModal").modal('show');
+        });
+
+        $('#deleteResBtn').click(function () {
+            $("#confirmDelete").modal('show');
+
+            $('#deleteResBtn').attr('asp-route-id');
+        });
+    });
+
+    </script>
+}
+
+<div class="modal fade" id="unableToEditModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Unable to edit reservation</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                To edit this reservation, you need to recheck room availability on the desired new dates. Please delete this reservation and create a new one instead.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@*<div class="modal fade" id="confirmDelete" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Are you sure?</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                This will delete the reservation from the system, making the reserved room available for new bookings. Are you sure you want to delete it indeed?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <a asp-action="delete" asp-route-id="" type="button" class="btn-sm btn-danger">Confirm delete</a>
+            </div>
+        </div>
+    </div>
+</div>*@
+
+

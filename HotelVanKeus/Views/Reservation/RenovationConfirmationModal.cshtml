@@ -1,0 +1,31 @@
+﻿@model HotelVanKeus.Models.Room
+
+<div class="container">
+    <p class="lead">Room renovation status changed successfully:</p>
+
+    <div>
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">Room Id</th>
+                    <th scope="col">Room Number</th>
+                    <th scope="col">Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="table-primary">
+                    <td>@Model.Id</td>
+                    <td>@Model.RoomNumber</td>
+                    <td>@Model.Status</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <hr class="my-4" />
+
+    <div>
+        <a type="button" href="@Url.Action("ListOfOngoingRenovations", "Reservation")" class="btn btn-primary">To list of ongoing renovations</a>
+    </div>
+
+</div>
