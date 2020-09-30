@@ -54,21 +54,14 @@ namespace HotelVanKeus.Controllers
         public IActionResult GetAvailableRooms(Reservation tempReservation)
         {
 
-            Console.WriteLine($"In GetAvailableRooms action. The parameter tempReservation. Room size: {tempReservation.Room.Size}, Room status: {tempReservation.Room.Status}");
-
             var roomsList = _context.Rooms.Include(r => r.Reservations).ToList();
 
             var availableRooms = roomsList.Where(room => room.Size.Equals(tempReservation.Room.Size))
                                           .Where(room => room.Status.Equals(tempReservation.Room.Status))
                                           .Where(room => room.TypeRoom.Equals(tempReservation.Room.TypeRoom))
-                                          //.Where(room => room.Reservations == null || room.Reservations.Any(item => item.Checkin > tempReservation.Checkout) &&
-                                          //                                            room.Reservations.Any(item => item.Checkout < tempReservation.Checkin))                              
+                                          .Where(room => room.Reservations.Count == 0 || room.Reservations.Any(item => item.Checkin > tempReservation.Checkout) &&
+                                                                                         room.Reservations.Any(item => item.Checkout < tempReservation.Checkin))                              
                                           .ToList();
-            
-            foreach (var room in availableRooms)
-            {
-                Console.WriteLine($"In GetAvailableRooms action. This is the availableRooms list. This is room: {room.Id}");
-            }
 
             //if (availableRooms.Count() == 0)
             //{
@@ -82,13 +75,6 @@ namespace HotelVanKeus.Controllers
                 AvailableRooms = availableRooms,
                 NewReservation = tempReservation
             };
-
-            Console.WriteLine($"In Get available rooms action. temp checkin: {newReservationViewModel.TempCheckin}");
-
-            foreach(var room in newReservationViewModel.AvailableRooms)
-            {
-                Console.WriteLine($"In the foreach loop: {room.Id}");
-            }
 
             return View("ListOfAvailableRooms", newReservationViewModel);
         }
