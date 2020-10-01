@@ -24,6 +24,7 @@ namespace HotelVanKeus
 
             //Other services to be added:
 
+            
             services.AddDbContext<HotelVanKeusContext>(options => {
                 options.UseSqlServer(Configuration.GetConnectionString("Default"));
             });

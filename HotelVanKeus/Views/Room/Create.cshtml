@@ -3,53 +3,54 @@
 <h3>Add new room to the hotel:</h3>
 
 <form class="form-group" asp-action="create">
-    <div class="form-group">
-        <label class="col-form-label">Room Number</label>
-        <input type="number" class="form-control" placeholder="Between 001 and 999" asp-for="RoomNumber">
-        <span asp-validation-for="RoomNumber" class="text-warning"></span>
+    <div class="row">
+        <div class="form-group col">
+            <label class="col-form-label">Room Number</label>
+            <input type="number" class="form-control" placeholder="Between 001 and 999" asp-for="RoomNumber" required>
+            <span asp-validation-for="RoomNumber" class="text-warning"></span>
+        </div>
+
+        <div class="form-group col">
+            <label class="col-form-label">Room Size (persons)</label>
+            <select class="form-control" asp-for="Size" required>
+                <option disabled selected hidden>Select..</option>
+                <option>1</option>
+                <option>2</option>
+                <option>3 to 4</option>
+                <option>5 to 6</option>
+            </select>
+            <span asp-validation-for="Size" class="text-warning"></span>
+        </div>
     </div>
 
-    <div class="form-group">
-        <label class="col-form-label">Room Size (persons)</label>
-        <select class="form-control" asp-for="Size">
-            <option>Select..</option>
-            <option>1</option>
-            <option>2</option>
-            <option>3 to 4</option>
-            <option>5 to 6</option>
-        </select>
-        <span asp-validation-for="Size" class="text-warning"></span>
+    <div class="row">
+        <div class="form-group col">
+            <label class="col-form-label">Room Type</label>
+            <select class="form-control" asp-for="TypeRoom" required>
+                <option disabled selected hidden>Select..</option>
+                <option>@HotelVanKeus.Models.TypeEnum.Budget</option>
+                <option>@HotelVanKeus.Models.TypeEnum.Normal</option>
+                <option>@HotelVanKeus.Models.TypeEnum.Luxury</option>
+            </select>
+            <span asp-validation-for="TypeRoom" class="text-warning"></span>
+        </div>
 
+        <div class="form-group col">
+            <label class="col-form-label">Room Status</label>
+            <select class="form-control" asp-for="Status" required>
+                <option disabled selected hidden>Select..</option>
+                <option>@HotelVanKeus.Models.StatusEnum.Available</option>
+                <option>@HotelVanKeus.Models.StatusEnum.Reserved</option>
+                <option>@HotelVanKeus.Models.StatusEnum.Renovation</option>
+            </select>
+            <span asp-validation-for="Status" class="text-warning"></span>
+        </div>
     </div>
 
-    <div class="form-group">
-        <label class="col-form-label">Room Type</label>
-        <select class="form-control" asp-for="TypeRoom">
-            <option>Select..</option>
-            <option>@HotelVanKeus.Models.TypeEnum.Budget</option>
-            <option>@HotelVanKeus.Models.TypeEnum.Normal</option>
-            <option>@HotelVanKeus.Models.TypeEnum.Luxury</option>
-        </select>
-        <span asp-validation-for="TypeRoom" class="text-warning"></span>
+    <div style="float: right;">
+        <button class="btn btn-primary" asp-action="list">Cancel</button>
+        <button class="btn btn-success" type="submit">Add Room</button>
     </div>
-
-    <div class="form-group">
-        <label class="col-form-label">Room Status</label>
-        <select class="form-control" asp-for="Status">
-            <option>Select..</option>
-            <option>@HotelVanKeus.Models.StatusEnum.Available</option>
-            <option>@HotelVanKeus.Models.StatusEnum.Reserved</option>
-            <option>@HotelVanKeus.Models.StatusEnum.Renovation</option>
-        </select>
-        <span asp-validation-for="Status" class="text-warning"></span>
-    </div>
-
-    @*
-        <button class="btn btn-success" type="submit" data-toggle="modal" data-target="roomAddedConfirmation" onclick="ConfirmationModal">Add Room</button>
-    *@
-
-    <button class="btn btn-success" type="submit">Add Room</button>
-    <button class="btn btn-primary" asp-action="list">Cancel</button>
 </form>
 
 

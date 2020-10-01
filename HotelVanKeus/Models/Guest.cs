@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace HotelVanKeus.Models
 {
@@ -14,5 +15,6 @@ namespace HotelVanKeus.Models
         public string City { get; set; }
         public string Country { get; set; }
         public List<Reservation> Reservations { get; set; }
+
     }
 }

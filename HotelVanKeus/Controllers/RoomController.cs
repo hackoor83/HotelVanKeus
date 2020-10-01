@@ -30,6 +30,15 @@ namespace HotelVanKeus.Controllers
         [HttpPost]
         public IActionResult Create(Room room)
         {
+            //Check if the room is already in the system:
+            if (_context.Rooms.Any(r => r.RoomNumber.Equals(room.RoomNumber)))
+            {
+                ViewBag.Title = "Room already in the database!";
+                ViewBag.Message = $"Room number {room.RoomNumber} already exists in the database. " +
+                    "Please review the new room details, or search for this room in the Rooms List.";
+                return View("_errorGeneral");
+            }
+
             _context.Rooms.Add(room);
             _context.SaveChanges();
             return RedirectToAction("ConfirmationModal", room);
@@ -38,8 +47,18 @@ namespace HotelVanKeus.Controllers
         public IActionResult Delete(int id)
         {
             var room = _context.Rooms.FirstOrDefault(e => e.Id == id);
-            _context.Rooms.Remove(room);
-            _context.SaveChanges();
+
+            try {
+                _context.Rooms.Remove(room);
+                _context.SaveChanges();
+            }
+            catch (Microsoft.EntityFrameworkCore.DbUpdateException)
+            {
+                ViewBag.Title = "Cannot delete this room right now!";
+                ViewBag.Message = "There is at least one reservation linked to this room. Please try again after the checkout or delete any linked reservations before deleting the room.";
+                return View("_errorGeneral");
+            }
+            
             return RedirectToAction("List");
         }
 

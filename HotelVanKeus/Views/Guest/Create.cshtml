@@ -3,57 +3,100 @@
 <h3>Add a new guest:</h3>
 
 <form method="post" class="form-group" asp-action="create">
-    <div class="form-group">
-        <label class="col-form-label">First name</label>
-        <input type="text" class="form-control" asp-for="FirstName">
-        <span asp-validation-for="FirstName" class="text-warning"></span>
+    <div class="row">
+        <div class="form-group col">
+            <label class="col-form-label">First name</label>
+            <input type="text" class="form-control" asp-for="FirstName" required>
+            <span asp-validation-for="FirstName" class="text-warning"></span>
+        </div>
+
+        <div class="form-group col">
+            <label class="col-form-label">Last name</label>
+            <input type="text" class="form-control" asp-for="LastName" id="lastNameInput" required>
+            <span asp-validation-for="LastName" class="text-warning"></span>
+        </div>
     </div>
 
-    <div class="form-group">
-        <label class="col-form-label">Last name</label>
-        <input type="text" class="form-control" asp-for="LastName">
-        <span asp-validation-for="LastName" class="text-warning"></span>
+    <div class="row">
+        <div class="form-group col">
+            <label class="col-form-label">Telephone</label>
+            <input type="number" class="form-control" asp-for="Telephone" required>
+            <span asp-validation-for="Telephone" class="text-warning"></span>
+        </div>
+
+        <div class="form-group col">
+            <label class="col-form-label">Email</label>
+            <input type="text" class="form-control" asp-for="Email" id="emailInput" required>
+            <span asp-validation-for="Email" class="text-warning"></span>
+        </div>
     </div>
 
-    <div class="form-group">
-        <label class="col-form-label">Telephone</label>
-        <input type="number" class="form-control" asp-for="Telephone">
-        <span asp-validation-for="Telephone" class="text-warning"></span>
+    <div class="row">
+        <div class="form-group col">
+            <label class="col-form-label">Address</label>
+            <input type="text" class="form-control" asp-for="Address" required>
+            <span asp-validation-for="Address" class="text-warning"></span>
+        </div>
+
+        <div class="form-group col">
+            <label class="col-form-label">Postcode</label>
+            <input type="text" class="form-control" asp-for="Postcode" required>
+            <span asp-validation-for="Postcode" class="text-warning"></span>
+        </div>
     </div>
 
-    <div class="form-group">
-        <label class="col-form-label">Email</label>
-        <input type="text" class="form-control" asp-for="Email">
-        <span asp-validation-for="Email" class="text-warning"></span>
+    <div class="row">
+        <div class="form-group col">
+            <label class="col-form-label">City</label>
+            <input type="text" class="form-control" asp-for="City" required>
+            <span asp-validation-for="City" class="text-warning"></span>
+        </div>
+
+        <div class="form-group col">
+            <label class="col-form-label">Country</label>
+            <input type="text" class="form-control" asp-for="Country" required>
+            <span asp-validation-for="Country" class="text-warning"></span>
+        </div>
     </div>
 
-    <div class="form-group">
-        <label class="col-form-label">Address</label>
-        <input type="text" class="form-control" asp-for="Address">
-        <span asp-validation-for="Address" class="text-warning"></span>
-    </div>
-
-    <div class="form-group">
-        <label class="col-form-label">Postcode</label>
-        <input type="text" class="form-control" asp-for="Postcode">
-        <span asp-validation-for="Postcode" class="text-warning"></span>
-    </div>
-
-    <div class="form-group">
-        <label class="col-form-label">City</label>
-        <input type="text" class="form-control" asp-for="City">
-        <span asp-validation-for="City" class="text-warning"></span>
-    </div>
-    
-    <div class="form-group">
-        <label class="col-form-label">Country</label>
-        <input type="text" class="form-control" asp-for="Country">
-        <span asp-validation-for="Country" class="text-warning"></span>
-    </div>
-
-    <button class="btn btn-success" type="submit">Add guest</button>
-    <button class="btn btn-primary" asp-action="list">Cancel</button>
+    <footer style="float: right;">
+        <button class="btn btn-success" type="submit">Add guest</button>
+        <button class="btn btn-primary" asp-action="list">Cancel</button>
+    </footer>
 </form>
+
+@section scripts{
+    <script>
+        @*$(document).ready(function () {
+           if(@Model.guestExist == true){
+                $('#guestAlreadyExistModal').modal('show');
+            }
+        });*@
+
+    </script>
+}
+
+@*Modals*@
+
+<div class="modal fade" id="guestAlreadyExistModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Guest already exist!</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                A guest with same first name, last name, and email address already exist. Please review the details.
+            </div>
+            <div class="modal-footer">
+                <a type="button" href="@Url.Action("Create", "Guest")" class="btn btn-primary" data-dismiss="modal">Reset form</a>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 
 

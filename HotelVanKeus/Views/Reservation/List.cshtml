@@ -5,7 +5,7 @@
 <hr class="my-2" />
 
 <div>
-    <table class="table table-hover">
+    <table class="table table-hover" id="reservationsListTable">
         <thead>
             <tr>
                 <th scope="col">Reservation Id</th>
@@ -29,8 +29,8 @@
                     <td>@reservation.Checkout.ToString("dd / MMM / yyyy")</td>
 
                     <td>
-                        <button class="btn-sm btn-warning" id="editResBtn" data-target="#unableToEditModal">Edit</button>
-                        <a class="btn-sm btn-danger" id="deleteResBtn"asp-action="delete" asp-route-id="@reservation.Id" asp-route-roomId="@reservation.Room.Id" type="button" >Cancel</a>
+                        <a role="button" class="badge badge-warning" id="editResBtn" data-target="#unableToEditModal">Edit</a>
+                        <button class="badge badge-danger" id="deleteResBtn" reservationId="@reservation.Id" roomId="@reservation.Room.Id" role="button">Cancel</button>
                     </td>
                 </tr>
             }
@@ -46,20 +46,31 @@
 
     <script type="text/javascript">
 
-    $(document).ready(function(){
-        $('#editResBtn').click(function () {
-            $("#unableToEditModal").modal('show');
-        });
+        $(document).ready(function () {
+            $('#editResBtn').click(function () {
+                $("#unableToEditModal").modal('show');
+            });
 
-        $('#deleteResBtn').click(function () {
-            $("#confirmDelete").modal('show');
+            $('#deleteResBtn').click(function () {
+                $("#confirmDelete").modal('show');
 
-            $('#deleteResBtn').attr('asp-route-id');
+                var reservationIdInTable = $('#deleteResBtn').attr("reservationId");
+                //var roomIdInTable = $('#deleteResBtn').attr("roomId");
+
+                $('#confirmDeleteBtn').click(() => {
+                    window.location.href = "Reservation/Delete?id=" + reservationIdInTable;
+                });
+            });
+
+            $(document).ready(() => {
+                $('#reservationsListTable').DataTable();
+            });
         });
-    });
 
     </script>
 }
+
+@*Edit notification modal*@
 
 <div class="modal fade" id="unableToEditModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
@@ -80,8 +91,9 @@
     </div>
 </div>
 
+@*Delete Confirmation Modal*@
 
-@*<div class="modal fade" id="confirmDelete" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+<div class="modal fade" id="confirmDelete" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -95,10 +107,28 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <a asp-action="delete" asp-route-id="" type="button" class="btn-sm btn-danger">Confirm delete</a>
+                <a class="btn-sm btn-danger" id="confirmDeleteBtn" role="button">Confirm delete</a>
             </div>
         </div>
     </div>
-</div>*@
+</div>
 
 
+@*
+    //$.ajax({
+                   //    url: "Reservation/Delete?id=" + reservationIdInTable + "&roomId=" + roomIdInTable,
+                   //    type: "GET",
+                   //    success: function () {
+                   //        alert("Deleted");
+                   //    },
+                   //    error: function () {
+                   //        alert("ERROR");
+                   //    }
+                   //});
+
+    //window.location.href = "Reservation/Delete?id=" + reservationIdInTable + "&roomId=" + roomIdInTable;
+    //$('#confirmDeleteBtn').attr("reservationIdCollected", reservationIdInTable);
+                //$('#confirmDeleteBtn').attr("roomIdCollected", roomIdInTable);
+
+
+*@

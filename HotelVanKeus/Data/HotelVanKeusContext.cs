@@ -21,7 +21,7 @@ namespace HotelVanKeus.Data
         
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-
+            //modelBuilder.Entity<Guest>().Ignore(t => t.guestExist);
             //modelBuilder.Entity<Renovation>().HasKey(s => new { s.Id });
             //modelBuilder.Entity<Renovation>().HasKey(s => s.Id );
 

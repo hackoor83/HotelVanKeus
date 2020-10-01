@@ -1,14 +1,11 @@
 ﻿@model List<HotelVanKeus.Models.Room>;
 
 <h3>List of Rooms:</h3>
-@*
-    <a asp-action="create">Add Room</a>
-*@
 
 <hr class="my-2" />
 
 <div>
-    <table class="table table-hover">
+    <table class="table table-hover" id="roomsListTable">
         <thead>
             <tr>
                 <th scope="col">Room Id</th>
@@ -30,8 +27,8 @@
                     <td>@room.Status</td>
 
                     <td>
-                        <a asp-action="edit" asp-route-id="@room.Id" type="button" class="btn-sm btn-warning">Edit</a>
-                        <a asp-action="delete" asp-route-id="@room.Id" type="button" class="btn-sm btn-danger">Delete</a>
+                        <a asp-action="edit" asp-route-id="@room.Id" type="button" class="badge badge-warning">Edit</a>
+                        <a id="deleteRoomBtn" roomId="@room.Id" role="button" class="badge badge-danger">Delete</a>
                     </td>
                 </tr>
             }
@@ -40,8 +37,66 @@
 </div>
 
 
-@*
+@section scripts {
+    <script type="text/javascript">
 
-    <a asp-action="delete" asp-route-id="@room.Id" type="button" class="btn-sm btn-danger">Delete</a>
-        <a asp-action="edit" asp-route-id="@room.Id" type="button" class="btn-sm btn-info">Edit</a></td>
-*@
+        $(document).ready(function () {
+            var roomId = $('#deleteRoomBtn').attr("roomId");
+            console.log("room id: " + roomId);
+
+            $('#deleteRoomBtn')
+                .off()
+                .on('click', function () {
+                    $("#confirmDelete").modal('show');
+
+                    $('#confirmDeleteBtn').click(() => {
+                        window.location.href = "Room/Delete?id=" + roomId;
+                    });
+                });
+
+            $(document).ready(() => {
+                $('#roomsListTable').DataTable();
+            });
+        });
+    </script>
+
+}
+
+
+@*Delete Confirmation Modal*@
+
+<div class="modal fade" id="confirmDelete" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Are you sure?</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                This will delete the room from the system permanently. Are you sure you want to delete it indeed?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <a class="btn-sm btn-danger" id="confirmDeleteBtn" role="button">Confirm delete</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*Unable to delete alert*@
+
+<div class="alert alert-dismissible alert-warning" id="cannotDeleteAlert" tabindex="-1" style="display:none;">
+    <button type="button" class="close" data-dismiss="alert">&times;</button>
+    <h4 class="alert-heading">Cannot Delete!</h4>
+    <p class="mb-0">This room in booked or under renovation. The status of the room must be "Available" in order to delete.</p>
+</div>
+
+@*Delete successfull*@
+
+<div class="alert alert-dismissible alert-success" id="deleteSuccessfulAlert" tabindex="-1" style="display:none;">
+    <button type="button" class="close" data-dismiss="alert">&times;</button>
+    <h4 class="alert-heading">Cannot Delete!</h4>
+    <p class="mb-0">This room in booked or under renovation. The status of the room must be "Available" in order to delete.</p>
+</div>

@@ -4,16 +4,16 @@ To do:
 
 
 Issues:
-1. Add modal
+1. In all lists, the delete button in datatables works only on the first row.
 
-2. In the List of available rooms, the Renovate button should be visible only to Available rooms.
+2. In the List of available rooms, the Renovate button should be visible only to Available rooms. (DONE)
 
 3. Make reservations log
 4. Make renovations log
 5. Make reservations history view per guest
 
-6. In Guests list, add a button to send the guest an email about an offer.
-7. In create guest form, add method to check if the guest is already in the database.
+6. In Guests list, add a button to send the guest an email about an offer.(DONE: Direct link on the email address added.)
+7. In create guest form, add method to check if the guest is already in the database. (done)
 
 8. In room, add functionality to query room availability at specific dates, period of time.
 9. In room list view, add a button to show a list of previous and projected reservations of this specific room. Showing also the free days.

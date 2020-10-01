@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using HotelVanKeus.Data;
 using HotelVanKeus.Models;
@@ -79,6 +78,23 @@ namespace HotelVanKeus.Controllers
             return View("ListOfAvailableRooms", newReservationViewModel);
         }
 
+        //Step 2.1: Alternative rooms
+        //public IActionResult ShowAlternativeRooms(ReservationViewModel reservationViewModel)
+        //{
+        //    var roomsList = _context.Rooms.Include(r => r.Reservations).ToList();
+        //    var checkin = reservationViewModel.NewReservation.Checkin;
+        //    var checkout = reservationViewModel.NewReservation.Checkout;
+        //    var roomSize = reservationViewModel.NewReservation.Room.Size;
+        //    var roomType = reservationViewModel.NewReservation.Room.TypeRoom;
+
+        //    var availableRooms = roomsList.Where(room => room.Size >= roomSize)
+        //                                  .Where(room => room.Status.Equals(tempReservation.Room.Status))
+        //                                  .Where(room => room.TypeRoom.Equals(tempReservation.Room.TypeRoom))
+        //                                  .Where(room => room.Reservations.Count == 0 || room.Reservations.Any(item => item.Checkin > tempReservation.Checkout) &&
+        //                                                                                 room.Reservations.Any(item => item.Checkout < tempReservation.Checkin))
+        //                                  .ToList();
+        //}
+
 
         //Step 3: Link selected room with guest
         [HttpGet]
@@ -117,14 +133,20 @@ namespace HotelVanKeus.Controllers
 
         //================================================================
 
-        public IActionResult Delete(int id, int roomId)
+        [HttpGet]
+        //public IActionResult Delete(int id, int roomId)
+        public IActionResult Delete(int id)
         {
-            var reservation = _context.Reservations.Find(id);
-            var reservedRoom = _context.Rooms.Find(roomId);
+            //var reservationSelected = _context.Reservations.Include(r => r.Room).Where(res => res.Id == id).FirstOrDefault();
+            var reservationSelected = _context.Reservations.Include(r => r.Room).FirstOrDefault(res => res.Id == id);
 
-            reservedRoom.Status = StatusEnum.Available;
+            //var reservedRoom = _context.Rooms.Find(roomId);
 
-            _context.Reservations.Remove(reservation);
+            reservationSelected.Room.Status = StatusEnum.Available;
+            
+            //reservedRoom.Status = StatusEnum.Available;
+
+            _context.Reservations.Remove(reservationSelected);
             _context.SaveChanges();
             return RedirectToAction(nameof(List));
         }

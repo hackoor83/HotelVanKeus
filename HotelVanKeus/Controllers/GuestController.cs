@@ -1,6 +1,8 @@
 ﻿using HotelVanKeus.Data;
 using HotelVanKeus.Models;
+using HotelVanKeus.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json.Converters;
 using System;
 using System.Linq;
 
@@ -27,18 +29,40 @@ namespace HotelVanKeus.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(Guest guest)
+        public IActionResult Create(Guest newGuest)
         {
-            _context.Guests.Add(guest);
+            //Check if the guest is already in the system:
+            if(_context.Guests.Any(g => g.FirstName.Equals(newGuest.FirstName) & g.LastName.Equals(newGuest.LastName) | g.Email.Equals(newGuest.Email)))
+            {
+                //var existingGuest = _context.Guests.FirstOrDefault(g => g.FirstName == newGuest.Email & g.FirstName ==newGuest.FirstName & g.LastName == newGuest.LastName);
+                ViewBag.Title = "Guest already in the database!";
+                ViewBag.Message = $"A guest with first name: {newGuest.FirstName}, last name: {newGuest.LastName}, " +
+                    $"and email address: {newGuest.Email}, already exist in the database. " +
+                    "Please review the new guest details, or search for this guest in the Guests List.";
+                return View("_errorGeneral");
+            }
+
+            _context.Guests.Add(newGuest);
             _context.SaveChanges();
-            return RedirectToAction("ConfirmationModal", guest);
+            return RedirectToAction("ConfirmationModal", newGuest);
         }
 
         public IActionResult Delete(int id)
         {
             var guest = _context.Guests.FirstOrDefault(e => e.Id == id);
-            _context.Guests.Remove(guest);
-            _context.SaveChanges();
+
+            try
+            {
+                _context.Guests.Remove(guest);
+                _context.SaveChanges();
+            }
+            catch (Microsoft.EntityFrameworkCore.DbUpdateException)
+            {
+                ViewBag.Message = "There is at least one reservation linked to this guest. Please try again after the checkout or delete any linked reservations before deleting the guest.";
+                ViewBag.Title = "Cannot delete this guest right now!";
+                return View("_errorGeneral");
+            }
+            
             return RedirectToAction("List");
         }
 

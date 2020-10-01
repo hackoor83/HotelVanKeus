@@ -16,7 +16,7 @@
 <div>
     <p class="lead">Search and select the guest:</p>
     <div>
-        <table class="table table-hover">
+        <table class="table table-hover" id="registeredGuestsList">
             <thead>
                 <tr>
                     <th scope="col">Id</th>
@@ -39,7 +39,7 @@
                         <td>
                             <a asp-action="ConfirmReservation" asp-route-selectedGuestId="@guest.Id"
                                asp-route-selectedRoomId="@Model.RequiredRoom.Id"
-                               asp-route-checkin="@Model.TempCheckin" 
+                               asp-route-checkin="@Model.TempCheckin"
                                asp-route-checkout="@Model.TempCheckout"
                                type="button" class="btn-sm btn-success">Select</a>
                         </td>
@@ -50,7 +50,17 @@
     </div>
 </div>
 
-<div>    
-    <a type="button" href="@Url.Action("collectroomrequirements", "Reservation")" class="btn btn-warning" >Start again</a>
-    <a type="button" href="@Url.Action("Create", "Guest")" class="btn btn-outline-primary" >Create new guest</a>
+<div style="float: right;">
+    <a type="button" href="@Url.Action("collectroomrequirements", "Reservation")" class="btn btn-warning">Start again</a>
+    <a type="button" href="@Url.Action("Create", "Guest")" class="btn btn-outline-primary">Create new guest</a>
 </div>
+
+
+
+@section scripts {
+    <script>
+    $(document).ready(() => {
+        $('#registeredGuestsList').DataTable();
+    });
+    </script>
+}

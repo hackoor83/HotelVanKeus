@@ -15,7 +15,7 @@
 <div>
     <p class="lead">Below are the available rooms that matches with guest's requirements:</p>
     <div>
-        <table class="table table-hover">
+        <table class="table table-hover" id="availableRoomsListTable">
             <thead>
                 <tr>
                     <th scope="col">Id</th>
@@ -46,7 +46,7 @@
     </div>
 </div>
 
-<div>
+<div style="float: right;">
     <a type="button" href="@Url.Action("collectroomrequirements", "Reservation")" class="btn btn-outline-warning">Back</a>
     <a type="button" href="@Url.Action("list", "Reservation")" class="btn btn-outline-danger">Cancel</a>
 </div>
@@ -54,41 +54,42 @@
 
 
 
+@section scripts {
+    <script>
+    $(document).ready(() => {
+        $('#availableRoomsListTable').DataTable();
+
+        if (@Model.AvailableRooms.Count == 0) {
+            $("#noAvailableRooms").modal('show');
+
+        }
+
+    });
+    </script>
+
+}
 
 
+@*No available rooms modal*@
 
-
-
-@*
-
-    <div>
-        <p class="lead">Guest Details:</p>
-        <div class="form-group">
-            <label class="col-form-label">First name</label>
-            <input type="text" class="form-control" asp-for="Guest.FirstName">
-            <span asp-validation-for="Guest.FirstName" class="text-warning"></span>
-        </div>
-
-        <div class="form-group">
-            <label class="col-form-label">Last name</label>
-            <input type="text" class="form-control" asp-for="Guest.LastName">
-            <span asp-validation-for="Guest.LastName" class="text-warning"></span>
-
-        </div>
-
-        <div class="form-group">
-            <label class="col-form-label">Telephone</label>
-            <input type="number" class="form-control" asp-for="Guest.Telephone">
-            <span asp-validation-for="Guest.Telephone" class="text-warning"></span>
-        </div>
-
-        <div class="form-group">
-            <label class="col-form-label">Email</label>
-            <input type="text" class="form-control" asp-for="Guest.Email">
-            <span asp-validation-for="Guest.Email" class="text-warning"></span>
+<div class="modal fade" id="noAvailableRooms" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">No available rooms</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                There are no available rooms that match with guest's request. What would you like to do?
+            </div>
+            <div class="modal-footer">
+                <a type="button" class="btn btn-info" href="@Url.Action("CollectRoomRequirements", "Reservation")">Change room requirements</a>
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+            </div>
         </div>
     </div>
-    </div>
+</div>
 
 
-*@
