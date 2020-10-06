@@ -12,8 +12,7 @@
 
     @RenderSection("scripts", required: false)
     @RenderSection("Styles", required: false)
-    @*<link href="~/font-awesome/css/fontawesome.min.css" rel="stylesheet" />*@
-    @*<script src="~/popper.js/cjs/popper.min.js"></script>*@
+   
 
 </head>
 <body>
@@ -30,7 +29,7 @@
                     <div class="dropdown-menu">
                         <a class="dropdown-item" href="@Url.Action("List", "Room")">List rooms</a>                        
                         <a class="dropdown-item" href="@Url.Action("Create", "Room")">New room</a>
-                        <a class="dropdown-item" href="@Url.Action("", "Room")">Availability checker</a>
+                        @*<a class="dropdown-item" href="@Url.Action("", "Room")">Availability checker</a>*@
                     </div>
                 </li>
               

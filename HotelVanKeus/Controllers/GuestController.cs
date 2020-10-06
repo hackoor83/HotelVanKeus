@@ -1,10 +1,11 @@
 ﻿using HotelVanKeus.Data;
 using HotelVanKeus.Models;
-using HotelVanKeus.ViewModels;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json.Converters;
+using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace HotelVanKeus.Controllers
 {
@@ -18,7 +19,7 @@ namespace HotelVanKeus.Controllers
         }
         public IActionResult List()
         {
-            var model = _context.Guests.ToList();
+            var model = _context.Guests.Include(r => r.Reservations).ToList();
             return View("List", model);
         }
 
@@ -34,11 +35,19 @@ namespace HotelVanKeus.Controllers
             //Check if the guest is already in the system:
             if(_context.Guests.Any(g => g.FirstName.Equals(newGuest.FirstName) & g.LastName.Equals(newGuest.LastName) | g.Email.Equals(newGuest.Email)))
             {
-                //var existingGuest = _context.Guests.FirstOrDefault(g => g.FirstName == newGuest.Email & g.FirstName ==newGuest.FirstName & g.LastName == newGuest.LastName);
                 ViewBag.Title = "Guest already in the database!";
                 ViewBag.Message = $"A guest with first name: {newGuest.FirstName}, last name: {newGuest.LastName}, " +
                     $"and email address: {newGuest.Email}, already exist in the database. " +
                     "Please review the new guest details, or search for this guest in the Guests List.";
+                return View("_errorGeneral");
+            }
+
+            //Check if the email address is valid:
+            Regex regex = new Regex(@"^[\w0-9._%+-]+@[\w0-9.-]+\.[\w]{2,6}$");
+            if (!regex.IsMatch(newGuest.Email))
+            {
+                ViewBag.Title = "Email address is not valid!";
+                ViewBag.Message = $"The email address is not valid. Please review.";
                 return View("_errorGeneral");
             }
 
@@ -89,13 +98,8 @@ namespace HotelVanKeus.Controllers
         [HttpGet]
         public IActionResult Search(string searchInput)
         {
-            Console.WriteLine($"In Search action. The searchInput is: {searchInput}");
 
-            //var listOfMatches = _context.Guests
-            //    .Where(guest => guest.FirstName.Contains(searchInput))
-            //    .ToList();
-
-            var listOfMatches = _context.Guests
+            var listOfMatches = _context.Guests.Include(r => r.Reservations)
                 .Where(guest => guest.Id.Equals(searchInput) | guest.FirstName.Contains(searchInput) | guest.LastName.Contains(searchInput) |
                 guest.Telephone.Equals(searchInput) | guest.Postcode.Contains(searchInput) | guest.Email.Contains(searchInput) | 
                 guest.Address.Contains(searchInput) | guest.City.Contains(searchInput) | guest.Country.Contains(searchInput))

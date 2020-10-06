@@ -29,8 +29,8 @@
                     <td>@reservation.Checkout.ToString("dd / MMM / yyyy")</td>
 
                     <td>
-                        <a role="button" class="badge badge-warning" id="editResBtn" data-target="#unableToEditModal">Edit</a>
-                        <button class="badge badge-danger" id="deleteResBtn" reservationId="@reservation.Id" roomId="@reservation.Room.Id" role="button">Cancel</button>
+                        <a role="button" class="badge badge-warning" id="editResBtn" data-toggle="modal" data-target="#unableToEditModal">Edit</a>
+                        <button class="badge badge-danger" id="deleteResBtn" onclick="deleteClicked(@reservation.Id)" role="button">Cancel</button>
                     </td>
                 </tr>
             }
@@ -46,25 +46,16 @@
 
     <script type="text/javascript">
 
+        function deleteClicked(id) {
+            $("#confirmDelete").modal('show');
+
+            $('#confirmDeleteBtn').click(() => {
+                window.location.href = "Reservation/Delete?id=" + id;
+            });
+        }
+
         $(document).ready(function () {
-            $('#editResBtn').click(function () {
-                $("#unableToEditModal").modal('show');
-            });
-
-            $('#deleteResBtn').click(function () {
-                $("#confirmDelete").modal('show');
-
-                var reservationIdInTable = $('#deleteResBtn').attr("reservationId");
-                //var roomIdInTable = $('#deleteResBtn').attr("roomId");
-
-                $('#confirmDeleteBtn').click(() => {
-                    window.location.href = "Reservation/Delete?id=" + reservationIdInTable;
-                });
-            });
-
-            $(document).ready(() => {
-                $('#reservationsListTable').DataTable();
-            });
+            $('#reservationsListTable').DataTable();
         });
 
     </script>
@@ -112,23 +103,3 @@
         </div>
     </div>
 </div>
-
-
-@*
-    //$.ajax({
-                   //    url: "Reservation/Delete?id=" + reservationIdInTable + "&roomId=" + roomIdInTable,
-                   //    type: "GET",
-                   //    success: function () {
-                   //        alert("Deleted");
-                   //    },
-                   //    error: function () {
-                   //        alert("ERROR");
-                   //    }
-                   //});
-
-    //window.location.href = "Reservation/Delete?id=" + reservationIdInTable + "&roomId=" + roomIdInTable;
-    //$('#confirmDeleteBtn').attr("reservationIdCollected", reservationIdInTable);
-                //$('#confirmDeleteBtn').attr("roomIdCollected", roomIdInTable);
-
-
-*@

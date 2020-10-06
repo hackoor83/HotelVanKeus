@@ -28,7 +28,7 @@
 
                     <td>
                         <a asp-action="edit" asp-route-id="@room.Id" type="button" class="badge badge-warning">Edit</a>
-                        <a id="deleteRoomBtn" roomId="@room.Id" role="button" class="badge badge-danger">Delete</a>
+                        <a id="deleteRoomBtn" role="button" class="badge badge-danger" onclick="deleteClicked(@room.Id)">Delete</a>
                     </td>
                 </tr>
             }
@@ -40,24 +40,18 @@
 @section scripts {
     <script type="text/javascript">
 
-        $(document).ready(function () {
-            var roomId = $('#deleteRoomBtn').attr("roomId");
-            console.log("room id: " + roomId);
+        function deleteClicked(id) {
+            $("#confirmDelete").modal('show');
 
-            $('#deleteRoomBtn')
-                .off()
-                .on('click', function () {
-                    $("#confirmDelete").modal('show');
-
-                    $('#confirmDeleteBtn').click(() => {
-                        window.location.href = "Room/Delete?id=" + roomId;
-                    });
-                });
-
-            $(document).ready(() => {
-                $('#roomsListTable').DataTable();
+            $('#confirmDeleteBtn').click(() => {
+                window.location.href = "Room/Delete?id=" + id;
             });
+        }
+
+        $(document).ready(function () {
+                $('#roomsListTable').DataTable();
         });
+
     </script>
 
 }

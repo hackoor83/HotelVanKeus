@@ -17,29 +17,38 @@
                 <th scope="col">Postcode</th>
                 <th scope="col">City</th>
                 <th scope="col">Country</th>
-                @*<th scope="col">Active reservations</th>*@
+                <th scope="col">Active reservations</th>
                 <th scope="col">Actions</th>
             </tr>
         </thead>
         <tbody>
             @foreach (var guest in Model)
             {
-                <tr class="table-primary">
-                    <td>@guest.Id</td>
-                    <td>@guest.FirstName</td>
-                    <td>@guest.LastName</td>
-                    <td>@guest.Telephone</td>
-                    <td><a href="mailto:@guest.Email">@guest.Email</a></td>
-                    <td>@guest.Address</td>
-                    <td>@guest.Postcode</td>
-                    <td>@guest.City</td>
-                    <td>@guest.Country</td>
-                    @*<td>@guest.Reservations.Count()</td>*@
-                    <td>
-                        <a asp-action="edit" asp-route-id="@guest.Id" type="button" class="badge badge-warning">Edit</a>
-                        <a role="button" guestId="@guest.Id" class="badge badge-danger" id="deleteGuestBtn">Delete</a>
-                    </td>
-                </tr>
+                
+
+            <tr class="table-primary">
+                <td>@guest.Id</td>
+                <td>@guest.FirstName</td>
+                <td>@guest.LastName</td>
+                <td>@guest.Telephone</td>
+                <td><a href="mailto:@guest.Email">@guest.Email</a></td>
+                <td>@guest.Address</td>
+                <td>@guest.Postcode</td>
+                <td>@guest.City</td>
+                <td>@guest.Country</td>
+                @if (@guest.Reservations.Count != 0)
+                {
+                    <td><a asp-action="GuestReservations" asp-controller="Reservation" asp-route-guestId="@guest.Id">@guest.Reservations.Count</a></td>
+                }
+                else 
+                { 
+                <td>0</td>
+                }
+                <td>
+                    <a asp-action="edit" asp-route-id="@guest.Id" type="button" class="badge badge-warning">Edit</a>
+                    <a role="button" class="badge badge-danger" onclick="deleteClicked(@guest.Id)">Delete</a>
+                </td>
+            </tr>
             }
         </tbody>
     </table>
@@ -48,20 +57,17 @@
 
 @section scripts {
     <script>
+
+        function deleteClicked(id) {
+            $("#confirmDelete").modal('show');
+
+            $('#confirmDeleteBtn').click(() => {
+                window.location.href = "Guest/Delete?id=" + id;
+            });
+        }
+
         $(document).ready(() => {
             $('#listGuestsTable').DataTable();
-
-            $('#deleteGuestBtn').click(function () {
-                $("#confirmDelete").modal('show');
-
-                var guestIdTable = $('#deleteGuestBtn').attr("guestId");
-                console.log(`guest id: ${guestIdTable}`);
-
-                $('#confirmDeleteBtn').click(() => {
-                    window.location.href = "Guest/Delete?id=" + guestIdTable;
-                });
-            });
-
         });
     </script>
 
